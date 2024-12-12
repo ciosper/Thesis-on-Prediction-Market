@@ -1,4 +1,4 @@
-# Quarto Book PDF template for university thesis
+# Quarto Book Thesis PDF
 
 This is a template for a university thesis created with [Quarto Book](https://quarto.org/docs/books/), designed for output in PDF format.
 
