@@ -1,0 +1,55 @@
+# Il Logarithmic Maerket Scoring Rule (LMSR)
+
+## Introduzione al LMSR
+
+Il **Logarithmic Market Scoring Rule** (o abbreviato, **LMSR**) è un meccanismo di pricing sviluppato da Robin Hanson, utilizzato principalmente nei prediction markets per determinare i prezzi dei contratti. Hanson, economista e professore associato alla George Mason University, ha introdotto questo concetto nella sua pubblicazione “Combinatorial Information Market Design” presentata nel 2003 come frutto della sua ricerca nel campo dei mercati predittivi e sui sistemi di aggregazione dell’informazione (@{knuth84}). Il LMSR appartiene alla categoria degli Automated Market Maker (AMM), un tipo di mercato in cui il prezzo dei contratti non è determinato dalle interazioni dirette tra compratori e venditori, ma da un algoritmo. Questo consente la gestione automatica della domanda e dell'offerta senza la necessità di un market maker fisico.
+L'idea alla base del LMSR è quella di creare un sistema in cui **il prezzo di un contratto (o azione) riflette la probabilità aggregata di un determinato evento**, basata sulle scommesse dei partecipanti. La caratteristica che costraddistingue il LMSR è che il market maker garantisce la liquidità in ogni momento, permettendo ai partecipanti di acquistare o vendere contratti a un prezzo che si aggiorna automaticamente in base alla quantità di contratti acquistati o venduti.
+
+
+## Formula del Logarithmic MArket Scoring Rule
+La formula del LMSR si basa su una funzione di costo che aumenta con l’acquisto di contratti, assicurando che il prezzo di ogni contratto rifletta la probabilità attesa dell’evento associato. La funzione di costo C è definita come segue:
+$$
+C(E) = b \cdot ln(\sum_{i=1}^n e^{q_i/b}),
+$$
+	dove:
+
+- $q=(q_1,q_2,…,q_n)$ rappresenta i volumi dei contratti associati a ciascun esito possibile
+
+- $b$ è il parametro di liquidità, che regola la sensibilità del prezzo ai volumi scambiati
+
+- $n$ è il numero di esiti possibili
+
+- $ln$ è il logaritmo naturale
+
+- $e$ è la base del logaritmo naturale
+
+Ad oggi esistono alcune varianti di questa funzione create ad hoc a seconda della tipologia di mercato che un Market Maker intende realizzare. Tuttavia, la funzione qui sopra presentata è la prima che ha sancito la partenza per lo studio e la creazione di mercati predittivi di qualsivoglia natura. Questo punto verrà spiegato meglio più avanti.
+Il prezzo di un contratto associato all’esito $i$ è dato dalla derivata parziale della funzione di costo rispetto al volume del contratto $q_i$:
+$$
+p_i= \frac{∂C(q)}{∂q_i} = \frac{e^{q_i/b}}{∑_{j=1}^n e^{q_j/b}}
+$$
+
+Questo prezzo rappresenta la probabilità implicita del verificarsi dell’evento i, secondo il mercato.
+
+## Proprietà del LMSR
+Il LMSR possiede diverse proprietà che lo rendono particolarmente adatto per l'uso nei prediction markets:
+
+- **Liquidità garantita**: Il LMSR assicura che vi sia sempre una controparte disponibile per ogni transazione, indipendentemente dal volume del mercato o dal numero di partecipanti. Questo è possibile grazie alla natura automatica del market maker, che regola i prezzi in base alla domanda e all'offerta senza bisogno di un intermediario fisico.
+
+- **Gestione del rischio**: Il parametro di liquidità $b$ controlla il rischio assunto dal market maker. Valori più elevati di $b$ rendono il mercato meno sensibile agli scambi, mantenendo i prezzi più stabili, mentre valori più bassi rendono il mercato più reattivo, ma aumentano il rischio per il market maker.
+
+- **Assenza di arbitraggi**: Il LMSR è progettato per prevenire arbitraggi, poiché i prezzi dei contratti si adattano automaticamente alle nuove informazioni, riflettendo immediatamente il cambiamento nelle probabilità percepite dai partecipanti.
+
+- **Convergenza delle probabilità**: Man mano che più informazioni vengono incorporate nel mercato attraverso gli scambi, i prezzi (e quindi le probabilità implicite) tendono a convergere verso la vera probabilità dell'esito dell'evento. Questo rende il LMSR un potente strumento di aggregazione delle informazioni.
+
+
+## Differenze tra LMSR e altri meccanismi di Scoring
+Il LMSR si contraddistingue rispetto ad altri meccanismi di scoring e market maker principalmente per la sua capacità di funzionare in modo completamente automatizzato e per le sue specifiche caratteristiche matematiche. Di seguito vengono illustrate alcune delle principali differenze:
+
+- **Market Scoring Rule (MSR) vs LMSR**: Mentre il LMSR è una specifica implementazione della più ampia classe dei Market Scoring Rule (MSR), la differenza principale è nella funzione di costo. Il LMSR utilizza una funzione logaritmica, che garantisce un aumento esponenziale del costo con l'acquisto di contratti, prevenendo così manipolazioni e mantenendo l'equilibrio nel mercato.
+
+- **Order Book Markets vs LMSR**: Nei mercati tradizionali basati su un order book, i prezzi sono determinati dagli ordini di acquisto e vendita inseriti dai partecipanti. Questi mercati richiedono tipicamente la presenza di un market maker fisico che gestisce il rischio e la liquidità. Al contrario, il LMSR non richiede la presenza di un market maker, poiché i prezzi si aggiustano automaticamente in base alla funzione di costo. Questo lo rende particolarmente utile in scenari con pochi partecipanti o con volumi di scambio irregolari.
+
+- **Fixed Odds vs LMSR**: Nei mercati a quota fissa (Fixed Odds), i prezzi sono predefiniti e non si adattano alle nuove informazioni in tempo reale. Questo può portare a inefficienze, soprattutto se le probabilità cambiano rapidamente. Il LMSR, invece, risponde dinamicamente alle nuove informazioni, aggiornando i prezzi in tempo reale e garantendo che riflettano sempre le probabilità attuali secondo il mercato.
+
+- **Continuous Double Auction (CDA) vs LMSR**: Nel meccanismo di Continuous Double Auction, i prezzi sono determinati dalle offerte e richieste di tutti i partecipanti, con la possibilità di grandi oscillazioni di prezzo in caso di bassa liquidità. Il LMSR, al contrario, fornisce un metodo più stabile per la determinazione dei prezzi, minimizzando le fluttuazioni estreme grazie alla funzione di costo logaritmica.

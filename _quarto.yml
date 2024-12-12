@@ -1,0 +1,89 @@
+project:
+  type: book
+jupyter:
+  python: "C:/Users/Gian Marco/Desktop/UNI/Tesi/quarto-book-thesis-main/.venv/Scripts/python.exe"
+jupyter-kernel: .venv
+
+
+book:
+  title: "Il ruolo del parametro di liquidità nei mercati predittivi"
+  subtitle: "Uno studio sul Logarithmic Market Scoring Rule"
+  author:
+    - name: "Gian Marco Minto"
+      id: "876928"
+      affiliations:
+        - name: "Università Ca' Foscari Venezia"
+          department: "Dipartimento di Scienze Ambientali, Informatica e Statistica"
+  date: "2024-01-01"
+  output-file: "Output_Tesi"
+  chapters:
+    - index.qmd
+    - chapter_1.qmd
+    - chapter_2.qmd
+    - chapter_3.qmd
+    - chapter_4.qmd
+    - chapter_5.qmd
+    - chapter_6.qmd
+    - references.qmd
+    
+
+bibliography: references.bib
+
+format:
+  pdf:
+    papersize: a4
+    documentclass: scrreprt
+    include-in-header:
+      text: |
+        \usepackage{makeidx}
+        \makeindex
+        \usepackage[utf8]{inputenc}
+        \usepackage{tikz}
+        \usepackage{geometry}
+        \usepackage{changepage}
+        \setkomafont{disposition}{\normalfont}
+        \setkomafont{pageheadfoot}{\normalfont\normalcolor\footnotesize}
+        \setcounter{section}{-1}
+        \usepackage{fancyvrb}
+        \usepackage{fvextra}
+        \fvset{fontsize=\scriptsize}
+        \DefineVerbatimEnvironment{Verbatim}{Verbatim}{fontsize=\scriptsize,breaklines=true}
+
+
+    include-after-body: 
+      text: |
+        \printindex
+    toc: true
+    toc-title: "Indice"
+    lof: true
+    lot: true
+    geometry:
+      - inner=3cm
+      - outer=3cm
+      - top=2.5cm
+      - bottom=2.5cm
+      - headsep=22pt
+      - headheight=11pt
+      - footskip=33pt
+      - ignorehead
+      - ignorefoot
+      - heightrounded
+    linestretch: 1.5
+    fontsize: 12pt  
+    mainfont: "Cambria"
+    monofont: "Courier New"
+    template-partials:
+      - _cover/before-body.tex
+      - _cover/toc.tex
+    number-sections: true
+
+
+#classoption: abstract
+abstract: |
+  Per la scrittura di questa tesi di laurea porto alla luce ricerche personali, articoli, fonti della letteratura esistente e i risultati ottenuti nel corso del lavoro di un progetto che sto tutt'ora sviluppando nell'azienda presso cui ho effettuato il tirocinio formativo. In particolare, mi sono concentrato sull'uso dei Prediction Markets come strumento per raccogliere e analizzare previsioni su eventi futuri, con particolare attenzione al ruolo del parametro di liquidità b nella funzione del Logarithmic Market Scoring Rule (LMSR). Stiamo lavorando alla creazione di una piattaforma automatizzata di prediction market, utilizzabile sia in contesti aziendali che in altre applicazioni.
+  
+  Il parametro b è essenziale per regolare la reattività del mercato ai volumi di scambio e per mantenere un equilibrio stabile tra domanda e offerta, soprattutto in mercati con livelli diversi di partecipazione e liquidità. Il lavoro effettuato fino ad ora si concentra su come ottimizzare questo parametro per adattarlo a diversi scenari, analizzando l'impatto delle sue variazioni sull'andamento del mercato anche a seconda della presenza attiva o meno dei partecipanti.
+
+  Vi è una panoramica sui principi teorici e storici dei prediction markets e del LMSR, per proseguire con uno studio dettagliato della formula del LMSR e delle sue proprietà.
+  
+  Le conclusioni dimostrano che la giusta configurazione del parametro di liquidità b può migliorare le prestazioni dei prediction markets, rendendoli più efficaci e flessibili a seconda del contesto.

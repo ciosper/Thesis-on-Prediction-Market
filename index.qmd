@@ -1,0 +1,27 @@
+# Introduzione {.unnumbered}
+
+## Obiettivo della tesi
+L'obiettivo di questa tesi è analizzare e ottimizzare il parametro di liquidità *b* all'interno della formula del **Logarithmic Market Scoring Rule (LMSR)**, una delle più comuni meccaniche utilizzate nei **Prediction Markets**. In particolare, lo studio si focalizza sull'impatto del parametro *b* in contesti differenti, come mercati con vari livelli di attività degli utenti e diverse condizioni di liquidità. Il lavoro è orientato allo sviluppo di linee guida per la calibrazione ottimale di questo parametro, per migliorare la precisione e l'efficienza della piattaforma di Prediction Market che sto sviluppando nell'azienda in cui lavoro.
+
+## Importanza dei Prediction Markets
+I Prediction Markets sono strumenti potenti e flessibili volti ad aggregare informazioni disperse tra diversi partecipanti, trasformandole in previsioni accurate su eventi futuri. Questi mercati, incentivando la partecipazione attraverso meccaniche di scommessa, nel corso degli anni si sono dimostrati efficaci in vari contesti, dalla previsione di risultati elettorali alla stima del successo di nuovi prodotti, ottenendo risultati molto attendibili in svariati campi dello scibile.
+Nell'ambito aziendale, i Prediction Markets possono servire come strumenti di indagine statistica, offrendo alle aziende un metodo innovativo per raccogliere informazioni e fare previsioni basate sulla saggezza collettiva dei dipendenti, dei clienti o di altri stakeholder. Il progetto in cui sono coinvolto mira a costruire una piattaforma di Prediction Markets per l'azienda, con l'intento di sfruttare questo strumento per migliorare i processi decisionali interni e offrire un nuovo servizio a potenziali clienti per l’azienda stessa.
+L'importanza del parametro di liquidità *b* nel contesto di questa piattaforma è molto alta in quanto esso determina la sensibilità del mercato ai volumi di scambio e, di conseguenza, influisce sulle probabilità assegnate agli eventi. Un'impostazione corretta di *b* è cruciale per garantire che il mercato funzioni in modo stabile ed efficace, sia in scenari con un elevato numero di partecipanti, sia in mercati con poca attività.
+
+## Struttura della tesi
+La tesi è strutturata come segue:
+
+- **Capitolo 1: Fondamenti Teorici dei Prediction Markets**
+In questo capitolo viene introdotto il concetto di Prediction Market, la loro evoluzione storica, e le principali applicazioni sia in ambito accademico che aziendale.
+
+- **Capitolo 2: Il Logarithmic Market Scoring Rule (LMSR)**
+Questo capitolo analizza in dettaglio la formula LMSR, esaminando le sue proprietà matematiche e la sua applicazione nei Prediction Markets. Viene inoltre introdotto il parametro di liquidità *b* e il suo ruolo nel funzionamento del LMSR.
+
+- **Capitolo 3: Il Parametro di Liquidità *b* e la sua Ottimizzazione**
+Viene presentata un'analisi approfondita del parametro *b*, con particolare attenzione al suo impatto sulle dinamiche di mercato. Vengono esaminati diversi scenari applicativi e viene discusso come adattare *b* per ottimizzare le performance del mercato in contesti specifici.
+
+- **Capitolo 4: Analisi dei risultati e discussione**
+Qui vengono presentati i risultati dell'analisi empirica e delle simulazioni condotte. I risultati vengono poi confrontati con la letteratura esistente e discusse le implicazioni teoriche e pratiche.
+
+- **Capitolo 5: Conclusioni**
+L'ultimo capitolo riassume i principali risultati della tesi, evidenziando le conclusioni principali e le possibili direzioni per future ricerche sul tema.

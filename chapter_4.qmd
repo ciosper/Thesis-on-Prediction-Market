@@ -1,0 +1,362 @@
+---
+jupyter:
+  kernelspec:
+    name: python3
+    language: python
+    display_name: Python 3
+
+format:
+  pdf:
+    include-in-header: |
+      \usepackage{etoolbox}
+      \AtBeginEnvironment{verbatim}{\small}  # Riduce la dimensione del font nei blocchi di codice
+      \setlength{\parindent}{0pt}  # Rimuove l'indentazione per prevenire problemi di layout
+---
+
+# Capitolo 4: Analisi dei risultati e discussione
+
+Per comprendere meglio la relazione che lega il parametro di liquidità *b* e la liquidità di mercato è stata adottata una tecnica di analisi attraverso l'applicazione di due test, ANOVA e Tukey HSD. L'assenza di dati reali che si sarebbero potuti reperire attraverso la piattaforma non ha permesso l'analisi attraverso metodiche più interessanti come l'utilizzo di modelli di Machine Learning quali Random Forest e Linear Regression. Nonostante ciò, con i dati simulati e presentati nel capitolo precedenti, sono stati implementati entrambi i modelli sopra citati che però non hanno prodotto risultati importanti o quantomeno più rilevanti di quanto non lo siano quelli presentati più avanti in questo capitolo.
+
+
+## Analisi dell'impatto del parametro di liquidità attraverso test ANOVA e Tukey
+
+Di seguito il risultato del test ANOVA sulle simulazioni di Monte Carlo effettuate per replicare degli scenari di mercati predittivi.
+
+```{python, include=false}
+#| echo: false
+
+### PRIMA SIMULAZIONE ###
+
+import numpy as np
+import random
+import pandas as pd
+
+# Funzione LMSR per calcolare i prezzi con normalizzazione
+def calculate_prices(q, b, decimals=5):
+    q = np.array(q)
+    max_q = np.max(q)
+    
+    exp_q_b = np.exp((q - max_q) / b)
+    total_exp = np.sum(exp_q_b)
+    
+    prices = exp_q_b / total_exp
+    
+    # Arrotondo i prezzi a 'decimals' decimali
+    prices = np.round(prices, decimals)
+    
+    return prices
+
+# Funzione per generare azioni casuali con somma totale fissa
+def generate_random_shares(n_events, total_liquidity):
+    shares = np.random.dirichlet(np.ones(n_events)) * total_liquidity
+    return np.round(shares)
+
+# Creo il dataset dai risultati della simulazione
+def create_dataset(simulated_data):
+    rows = []
+    for data in simulated_data:
+        row = {
+            'b': data['b'],
+            'spread': data['spread']
+        }
+        row.update({f'Evento_{i}': q for i, q in enumerate(data['q_total'])})
+        row.update({f'Prezzo_{i}': p for i, p in enumerate(data['prices'])})
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+# Simulazione Monte Carlo
+def monte_carlo_simulation(n_simulations, n_participants, n_events, b_values, total_liquidity=100000, decimals=4):
+    results = []
+    
+    for sim in range(n_simulations):
+
+        # Genero nuove azioni una volta per simulazione
+        q_total = generate_random_shares(n_events, total_liquidity)
+        
+        # Ciclo su tutti i valori di b mantenendo lo stesso q_total
+        for b in b_values:
+
+            # Accumulo azioni dei partecipanti
+            q_total_participants = q_total.copy()
+            
+            # Calcolo i prezzi finali e calcolo lo spread
+            prices = calculate_prices(q_total_participants, b)
+            spread = np.round(max(prices) - min(prices), decimals)
+            
+            # Aggiungo il risultato della simulazione alla lista
+            results.append({
+                'simulation': sim,
+                'b': b,
+                'q_total': q_total,
+                'prices': prices,
+                'spread': spread
+            })
+    
+    return results
+
+# Eseguo la simulazione Monte Carlo con 1000 simulazioni, 1000 partecipanti e 3 eventi
+monte_carlo_results = monte_carlo_simulation(
+    n_simulations=10, 
+    n_participants=1000, 
+    n_events=3, 
+    b_values=[1000, 2000, 3000, 4000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000]
+)
+
+df = create_dataset(monte_carlo_results)
+```
+
+```{python}
+#| echo: false
+
+import pandas as pd
+import numpy as np
+from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+
+# ANOVA: Verifico se il parametro 'b' ha un impatto significativo sullo spread
+anova_result = stats.f_oneway(
+    df[df['b'] == 1000]['spread'],
+    df[df['b'] == 2000]['spread'],
+    df[df['b'] == 3000]['spread'],
+    df[df['b'] == 4000]['spread'],
+    df[df['b'] == 5000]['spread'],
+    df[df['b'] == 10000]['spread'],
+    df[df['b'] == 15000]['spread'],
+    df[df['b'] == 20000]['spread'],
+    df[df['b'] == 25000]['spread'],
+    df[df['b'] == 30000]['spread'],
+    df[df['b'] == 35000]['spread'],
+    df[df['b'] == 40000]['spread'],
+    df[df['b'] == 45000]['spread'],
+    df[df['b'] == 50000]['spread']
+)
+
+# Creazione della tabella con i risultati
+#results_table = pd.DataFrame({
+#    'F-Value': [anova_result.statistic],
+#    'p-value': [anova_result.pvalue]
+#}, index = ["Prima Simulazione"])
+
+```
+
+```{python, include=false}
+#| echo: false
+
+### SECONDA SIMULAZIONE ###
+
+import numpy as np
+import random
+
+# Funzione LMSR per calcolare i prezzi con stabilizzazione numerica e normalizzazione
+def calculate_prices(q, b, decimals=5):
+    q = np.array(q)
+    max_q = np.max(q)
+    
+    # Calcolo l'esponenziale
+    exp_q_b = np.exp((q - max_q) / b)
+    total_exp = np.sum(exp_q_b)
+    
+    # Calcolo i prezzi come frazioni stabilizzate
+    prices = exp_q_b / total_exp
+    
+    # Arrotondo i prezzi a 'decimals' decimali
+    prices = np.round(prices, decimals)
+    
+    return prices
+
+# Funzione per generare azioni casuali con somma esattamente uguale a total_liquidity
+def generate_random_shares(n_events, total_liquidity):
+    shares = np.random.dirichlet(np.ones(n_events)) * total_liquidity
+    return np.round(shares, 2)
+
+# Simulazione Monte Carlo con liquidità massima totale fissa
+def monte_carlo_simulation_2(n_simulations, n_participants, n_events, b_values, total_liquidity=100000, decimals=4):
+    results = []
+    
+    for sim in range(n_simulations):
+        for b in b_values:
+
+            # Inizializzo q_total con zeri
+            q_total = np.zeros(n_events)
+            
+            for _ in range(n_participants):
+
+                # Genero azioni con somma totale esattamente pari a total_liquidity / n_participants
+                q = generate_random_shares(n_events, total_liquidity / n_participants)
+                q_total += q
+            
+            # Arrotondo q_total a due decimali
+            q_total = np.round(q_total, 2)
+            
+            # Calcolo i prezzi finali
+            prices = calculate_prices(q_total, b)
+            spread = np.round(max(prices) - min(prices), decimals)
+            
+            # Aggiungo il risultato della simulazione
+            results.append({
+                'simulation': sim,
+                'b': b,
+                'q_total': q_total,
+                'prices': prices,
+                'spread': spread
+            })
+    
+    return results
+   
+
+# Eseguo la simulazione Monte Carlo
+monte_carlo_results_2 = monte_carlo_simulation_2(n_simulations=10, n_participants=1000, n_events=3, b_values=[1000, 2000, 3000, 4000, 5000, 10000, 15000, 20000, 25000, 30000, 35000, 40000, 45000, 50000])
+
+df_2 = create_dataset(monte_carlo_results_2)
+
+```
+
+```{python}
+#| echo: false
+
+import pandas as pd
+import numpy as np
+from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+
+# ANOVA: Verifico se il parametro 'b' ha un impatto significativo sullo spread
+anova_result_2 = stats.f_oneway(
+    df_2[df_2['b'] == 1000]['spread'],
+    df_2[df_2['b'] == 2000]['spread'],
+    df_2[df_2['b'] == 3000]['spread'],
+    df_2[df_2['b'] == 4000]['spread'],
+    df_2[df_2['b'] == 5000]['spread'],
+    df_2[df_2['b'] == 10000]['spread'],
+    df_2[df_2['b'] == 15000]['spread'],
+    df_2[df_2['b'] == 20000]['spread'],
+    df_2[df_2['b'] == 25000]['spread'],
+    df_2[df_2['b'] == 30000]['spread'],
+    df_2[df_2['b'] == 35000]['spread'],
+    df_2[df_2['b'] == 40000]['spread'],
+    df_2[df_2['b'] == 45000]['spread'],
+    df_2[df_2['b'] == 50000]['spread']
+)
+
+# Creazione della tabella con i risultati
+#results_table_2 = pd.DataFrame({
+#    'F-Value': [anova_result_2.statistic],
+#    'p-value': [anova_result_2.pvalue]
+#}, index = ["Seconda Simulazione"])
+
+```
+
+```{python}
+import pandas as pd
+
+final_table = pd.DataFrame({
+    "F-Value": [anova_result.statistic, anova_result_2.statistic],
+    "p-value": [anova_result.pvalue, anova_result_2.pvalue ]
+}, index = ["1° simulazione", "2° simulazione"])
+
+print(final_table)
+```
+
+### Analisi dei risultati sul test ANOVA
+
+Dai test effettuati su entrambe le simulazioni, emerge chiaramente l'idea che il parametro *b* abbia un impatto significativo sullo spread del mercato.
+Due sono i valori che supportano le ipotesi avanzate dopo le simulazioni di Monte Carlo:
+
+- **F-value**: L'F-value molto elevato rivela che la variabilità tra i gruppi di *b* è molto maggiore rispetto alla variabilità all'interno dei gruppi.
+
+- **p-value**: Il p-value così estremamente basso e sotto la soglia di significatività del 0.05 indica che la probabilità che le differenze osservate tra i gruppi siano dovute al caso è quasi completamente nulla, ulteriore conferma che le differenze tra i vari valori di *b* sono altamente significative.
+
+L'analisi permette di confermare l'impatto significativo del parametro di liquidità sullo spread del mercato, tuttavia non è chiaro quali valori di *b* differiscano tra loro e nel loro impatto nel mercato.
+
+Per questo motivo viene eseguito un ulteriore controllo attraverso il test **Tukey HSD** (**Honestly Significant Difference**), il quale permette di confrontare tutte le possibili coppie di valori di *b* all'interno del dataset generato dalla simulazione per vedere quali differiscono significativamente tra loro. I parametri analizzati nel test sono i seguenti:
+
+- **group1** e **group2**: queste due colonne rappresentano i due valori del parametro analizzato, *b*, che vengono confrontati
+
+- **meandiff**: Differenza media dello *spread* tra i due valori di *b*. Valore positivo significa che il **group1** ha uno spread maggiore rispetto a **group2**, valore negativo indica il contrario.
+
+- **p-adj**: il p-value corretto per il confronto multiplo tra i due gruppi. Un valore di p-adj inferiore a 0.05 indica che la differenza tra i due gruppi di *b* è statisticamente significativa.
+
+- **lower** e **upper**: gli intervalli di confidenza per la differenza media. Questi intervalli tuttavia non includono lo zero, ulteriore indice di una differenza significativa tra i due gruppi.
+
+- **reject**: questa colonna indica se la differenza tra i due gruppi è significativa o meno. Se **True**, i due valori di *b* confrontati sono significativamente diversi in termini di spread.
+
+È stato applicato un filtraggio nel dataset per includere nel test solamente le righe il cui p-value aggiustato (p-adj) è inferiore a 0.05. La tabella sottostante riporta solamente le righe del test i cui valori nella colonna **reject** corrispondono a *True*.
+
+```{python}
+#| echo: false
+
+### TUKEY HSD TEST ###
+
+from scipy import stats
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+
+# Eseguo il test Tukey HSD
+tukey = pairwise_tukeyhsd(endog=df['spread'], groups=df['b'], alpha=0.05)
+
+# Converti i risultati di Tukey in un DataFrame per una gestione più comoda
+tukey_df = pd.DataFrame(data=tukey.summary().data[1:], columns=tukey.summary().data[0])
+
+# Filtra per significatività (p-value < 0.05)
+significant_results = tukey_df[tukey_df['p-adj'] < 0.05]
+
+# Stampa i risultati significativi
+significant_results.head(10)
+```
+
+### Analisi Test Tukey HSD
+I valori di *b* testati nella simulazione producono tutti *spread* significativamente diversi tra loro, con il secondo valore della coppia (**group2**) che tende a produrre *spread* mediamente più elevati rispetto al primo.
+
+Per visualizzare graficamente i risultati e poter osservare i pattern tra i valori di *b*, si è ricorso a due tecniche di visualizzazione grafica dei risultati: HeatMap e Boxplot.
+
+```{python}
+#| echo: false
+#| eval: false
+
+### HEATMAP ###
+
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Crea una matrice delle differenze medie di spread tra valori di b
+b_values = sorted(df['b'].unique())
+mean_spread_diff = np.zeros((len(b_values), len(b_values)))
+
+for i, b1 in enumerate(b_values):
+    for j, b2 in enumerate(b_values):
+        mean_diff = df[df['b'] == b1]['spread'].mean() - df[df['b'] == b2]['spread'].mean()
+        mean_spread_diff[i, j] = mean_diff
+
+# Visualizza la heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(mean_spread_diff, annot=True, fmt=".4f", cmap='coolwarm', xticklabels=b_values, yticklabels=b_values)
+plt.title('Differenze medie degli spread tra i valori di b')
+plt.xlabel('Valore di b')
+plt.ylabel('Valore di b')
+plt.show()
+
+```
+
+![HeatMap 1° Simulazione](heatmap%20sim_1.png){width=100%}
+
+Dall'HeatMap generata sulla base della prima simulazione è possibile vedere le differenze tra le medie degli *spread* tra i valori del parametro *b*. Ciò che graficamente emerge sono le differenze tra i valori di *spread* generati alle estremità colorate (blu e rosse, rispettivamente valori negativi e positivi) e i valori generati nella parte centrale del grafico, dove i valori tendono a ridursi notevolmente. Più specificamente, le aree più bianche indicano coppie di valori di *b* i cui spread non differiscono sgnificativamente.
+
+Non viene riportata l'heatmap della seconda simulazione in quanto visivamente molto simile alla precedente. Vengono invece di seguito riportati i Boxplot per entrambe le simulazioni.
+
+![BoxPlot Prima Simulazione con Media Spread](BoxPlot_sim2.png){width="100%"}
+
+![BoxPlot Seconda Simulazione con Media Spread](BoxPlot_sim1.png){width="100%"}
+
+
+Una prima conclusione che si può trarre da questo grafico è che man mano che *b* cresce, la differenza media di spread tra i valori di *b* tende a ridursi, il che suggerisce che i mercati con valori più elevati di *b* tendono a stabilizzarsi su spread più simili.
+
+
+
+
+
+
+
+
+
+
+
+

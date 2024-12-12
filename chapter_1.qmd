@@ -1,0 +1,52 @@
+\pagenumbering{arabic}
+
+# Fondamenti teorici e storici dei Prediction Markets
+
+## Definizione di Prediction Market
+I **Prediction Markets** (in italiano ‘**mercati predittivi**’) sono mercati finanziari in cui i partecipanti comprano e vendono contratti associati a eventi futuri. Il prezzo di ciascun contratto riflette la probabilità che l'evento si realizzi, secondo la percezione collettiva degli stessi partecipanti. In altre parole, i Prediction Markets funzionano come meccanismi per aggregare informazioni disperse tra i partecipanti, trasformandole in previsioni probabilistiche. Questi mercati si basano sul principio che il prezzo di mercato, risultante dall'interazione tra domanda e offerta, rappresenti un'accurata stima della probabilità di accadimento di un determinato evento.
+Uno degli esempi più emblematici è un mercato predittivo relativo a un'elezione politica, dove i partecipanti comprano contratti su un candidato specifico. Se il candidato vince, il contratto paga un determinato ammontare di crediti (più avanti si discuterà della valuta utilizzata per la compra-vendita di tali contratti); se perde, il contratto diventa privo di valore e non paga alcun credito al suo acquirente. Il prezzo di un contratto corrispondente a un determinato candidato riflette quindi la probabilità stimata di vittoria di quel candidato secondo i partecipanti al mercato.
+
+
+## Breve storia ed evoluzione dei Prediction Markets
+I mercati predittivi nascono tra la fine del ‘800 ed i primi anni del ‘900, quando i mercati delle scommesse elettorali erano comuni negli Stati Uniti. Tuttavia, l'uso dei prediction markets come strumento formale per fare previsioni è emerso solo alla fine del ‘900.
+Uno dei primi e più noti esempi di prediction market moderno è l'Iowa Electronic Markets (IEM), lanciato nel 1988 presso l'Università dell'Iowa. L'IEM è stato creato per prevedere i risultati delle elezioni presidenziali statunitensi e ha dimostrato una notevole accuratezza, spesso superiore ai sondaggi tradizionali. Questo successo ha portato all'espansione del concetto di prediction markets in altri ambiti, come l'economia e la finanza.
+Negli anni 2000, diverse aziende tecnologiche, come Google e HP (Hewlett-Packard), hanno utilizzato i prediction markets all’interno delle stesse aziende per ottenere previsioni interne su vari aspetti del loro business, dalla domanda di prodotti all'innovazione tecnologica. Questi esperimenti condotti da aziende che negli anni 2000 avevano già iniziato ad acquisire fama e notorietà in tutto il mondo hanno contribuito a rafforzare l'interesse per i prediction markets come strumento di gestione aziendale e analisi del rischio.
+
+
+## Applicazione dei Prediction Markets
+I prediction markets sono stati applicati con successo in una varietà di contesti, dimostrando  così il loro potenziale.
+
+- **Iowa Electronic Markets (IEM)**: Come menzionato, l'IEM è uno dei più antichi e riconosciuti prediction markets. Esso ha previsto con precisione numerosi esiti elettorali, contribuendo a stabilire la credibilità dei prediction markets come strumenti di previsione.
+
+- **Google**: Google ha utilizzato i prediction markets per prevedere una serie di eventi aziendali, come il lancio di nuovi prodotti e le performance delle campagne di marketing. I prediction markets di Google si sono dimostrati particolarmente utili per raccogliere informazioni disperse tra i dipendenti, migliorando la qualità delle previsioni rispetto ai metodi tradizionali.
+
+- **Hewlett-Packard (HP)**: HP ha utilizzato i prediction markets per stimare le vendite dei suoi prodotti e per prevedere il successo dei progetti di ricerca e sviluppo. L'adozione di questo strumento ha permesso all'azienda di ottenere stime più accurate rispetto alle previsioni basate solo su modelli statistici o opinioni di esperti.
+
+- **InTrade e Betfair**: Questi mercati online hanno permesso agli utenti di scommettere su eventi di attualità, come elezioni politiche, premi cinematografici e risultati sportivi. Questi mercati hanno mostrato che, in molti casi, il meccanismo di predizione basata sull’informazione collettiva è più efficace delle singole previsioni.
+
+
+## Vantaggi e svantaggi dei Prediction Markets
+
+Nonostante negli anni abbiano riscosso notorietà per il modo peculiare di raccogliere informazioni e prendere di conseguenza delle decisioni (da parte delle aziende che ne facevano uso), i Prediction Markets presentavano anche degli svantaggi non indifferenti.
+
+**Vantaggi**:
+
+- **Aggregazione dell'informazione**: Uno dei principali punti di forza dei prediction markets è la loro capacità di aggregare informazioni sparse tra i partecipanti, spesso ottenendo previsioni più accurate rispetto a quelle prodotte da singoli esperti o metodi tradizionali come i sondaggi.
+
+- **Incentivazione della partecipazione**: I mercati predittivi creano incentivi economici che motivano i partecipanti a condividere le loro conoscenze e a fare previsioni informate.
+
+- **Flessibilità**: I prediction markets possono essere applicati a una vasta gamma di scenari, da previsioni economiche a risultati elettorali, fino alla gestione di progetti aziendali.
+
+- **Risposta rapida agli eventi**: I prezzi nei mercati predittivi reagiscono rapidamente ai nuovi eventi o informazioni, offrendo previsioni aggiornate in tempo reale.
+ 
+
+ 
+**Limitazioni**:
+
+- **Manipolazione del mercato**: In alcuni casi, individui o gruppi con interessi particolari possono tentare di manipolare i prezzi dei mercati predittivi per influenzare le previsioni. Questo può compromettere l'affidabilità dei risultati.
+
+- **Partecipazione limitata**: La precisione dei prediction markets dipende dal numero e dalla diversità dei partecipanti. Se la partecipazione è bassa o limitata ad un gruppo omogeneo, le previsioni potrebbero essere meno accurate.
+
+- **Rischio di illiquidità**: Mercati con pochi partecipanti o con bassi volumi di scambio possono soffrire di problemi di liquidità, rendendo difficile l'accuratezza dei prezzi e quindi delle previsioni.
+
+- **Barriere legali e regolamentari**: In alcuni paesi, le leggi sul gioco d'azzardo possono limitare l'uso di prediction markets, riducendo la loro applicabilità e diffusione.
